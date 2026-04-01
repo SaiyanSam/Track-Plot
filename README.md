@@ -9,4 +9,6 @@ To estimate the intrinsics and extrincs:
 	ns-process-data video --data data/demo1.mp4 --output-dir results/colmap_output --sfm-tool hloc --feature-type superpoint --matcher-type superpoint+lightglue
 To train from the above genearted output:
 	ns-train splatfacto --data results/colmap_output
-	
+Go to browser:
+	http://localhost:7007
+
