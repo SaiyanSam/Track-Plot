@@ -3,7 +3,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import os
 
-# 1. Load the Data
 csv_path = 'results/car_3d_trajectory.csv'
 print(f"Loading trajectory data from: {csv_path}")
 
@@ -13,22 +12,20 @@ if not os.path.exists(csv_path):
 
 df = pd.read_csv(csv_path)
 
-# 2. Create the 3D Scatter Plot
-# We use the dataframe index (row number) as the color so we can see time progression
+# 2. 3D Scatter Plot
 print("Generating interactive 3D plot...")
 fig = px.scatter_3d(
     df, 
     x='World_X', 
     y='World_Y', 
     z='World_Z',
-    color=df.index, # Color maps to time/frame progression
-    color_continuous_scale='turbo', # A highly visible rainbow gradient
+    color=df.index,
+    color_continuous_scale='turbo',
     title='Interactive 3D Car Trajectory',
     labels={'color': 'Frame Sequence'}
 )
 
-# 3. Format the lines and markers
-# This connects the dots so it looks like a continuous driving path
+# Formatting the lines and markers
 fig.update_traces(
     marker=dict(size=4, opacity=0.8),
     line=dict(width=2, color='DarkSlateGrey'),
@@ -36,8 +33,7 @@ fig.update_traces(
 )
 fig.data[0].update(mode='markers+lines')
 
-# 4. Lock the Aspect Ratio (CRITICAL)
-# If we don't do this, Plotly will stretch the 3D space to fit your monitor, warping the physical road shape
+#  Lock the Aspect Ratio
 fig.update_layout(
     scene=dict(
         xaxis_title='World X',
@@ -48,10 +44,8 @@ fig.update_layout(
     margin=dict(l=0, r=0, b=0, t=40)
 )
 
-# 5. Save and Show
 html_output = 'results/interactive_3d_trajectory.html'
 fig.write_html(html_output)
-print(f"✅ Saved interactive 3D map to: {html_output}")
+print(f"Saved interactive 3D map to: {html_output}")
 
-# This will automatically open the graph in your default web browser
 fig.show()
