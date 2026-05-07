@@ -1,84 +1,131 @@
-Nerfstudio's command is just a wrapper, so it needs the actual COLMAP engine installed on your Linux machine to do the math. Since you are using Conda, this is incredibly easy:  
-	conda install -c conda-forge colmap  
-	git clone --recursive https://github.com/cvg/Hierarchical-Localization.git  
-	cd Hierarchical-Localization  
-	pip install -e .  
-	cd ..  
-	
-To estimate the intrinsics and extrincs:  
-	ns-process-data video --data data/demo1.mp4 --output-dir results/colmap_output --sfm-tool hloc --feature-type superpoint --matcher-type superpoint+lightglue
-To train from the above genearted output:
-	ns-train splatfacto --data results/colmap_output
-Go to browser:
-	http://localhost:7007
+# 🚗 3DGS Vehicle Trajectory Reconstruction for ICVGIP
 
-# 🚗 3DGS Trajectory Reconstruction Project (ICVGIP Submission)
+## 📌 Project Goal
 
-## 📌 Problem Statement
-We aim to estimate the **3D trajectory of a moving object (car)** using multi-view detections and integrate this trajectory into a **3D Gaussian Splatting (3DGS)** reconstructed scene. The goal is to move beyond simple visualization and develop a **robust, temporally consistent trajectory estimation method** that works under noisy detections and real-world constraints.
+This project aims to estimate robust **3D trajectories of moving vehicles** using camera poses and object detections, and integrate these trajectories into a reconstructed **3D Gaussian Splatting (3DGS)** scene.
+
+The long-term objective is to develop a **temporally consistent trajectory recovery framework** for dynamic objects inside neural-rendered environments and submit the work to **ICVGIP**.
 
 ---
 
-## 🎯 Objectives
-- Build a complete pipeline: detection → tracking → triangulation → 3D trajectory → 3DGS overlay  
-- Develop a **novel method** for improving trajectory estimation (e.g., temporal smoothing / optimization / joint modeling)  
-- Compare against strong baselines  
-- Produce a **publishable paper for ICVGIP (8 weeks timeline)**  
+# 🎯 Core Objectives
+
+- Recover vehicle trajectories in global 3D coordinates
+- Use camera geometry + tracking for localization
+- Integrate trajectories into 3DGS scenes
+- Improve robustness under:
+  - noisy detections
+  - occlusions
+  - missing tracks
+- Develop a publishable research contribution
 
 ---
 
-## 📚 Core References
-- 3D Gaussian Splatting (Kerbl et al., 2023)  
-- D-NeRF (Dynamic NeRF)  
-- DeepSORT / ByteTrack (Tracking)  
-- Multi-view triangulation (geometry baseline)  
+# 📚 Key Research Areas
+
+- 3D Gaussian Splatting (3DGS)
+- Dynamic Neural Rendering
+- Multi-view Geometry
+- Object Tracking
+- Temporal Trajectory Optimization
 
 ---
 
-## 🗓️ 8-Week Plan
+# 🗓️ 8-Week Research Plan
 
 | Week | Phase | Tasks | Status |
 |------|------|------|--------|
-| **Week 1** | **Foundation + Literature Survey** | - Read key papers (3DGS, D-NeRF, tracking, triangulation)<br>- Write 1–2 page literature notes<br>- Define problem statement + contribution idea<br>- Fix existing pipeline bugs (end-to-end working) | Planned |
-| **Week 2** | **Baseline Setup** | - Implement triangulation-only baseline<br>- Implement tracking (DeepSORT/ByteTrack) + triangulation<br>- Prepare dataset (Wildtrack/custom)<br>- Standardize pipeline I/O | Planned |
-| **Week 3** | **Method Design (Core Contribution)** | - Choose contribution (temporal smoothing / optimization / joint modeling)<br>- Formulate equations<br>- Implement initial version (v1)<br>- Verify basic improvements over baseline | Planned |
-| **Week 4** | **Method Improvement** | - Handle noise, occlusions, missing detections<br>- Improve stability of trajectory<br>- Debug and refine method<br>- Start defining evaluation metrics (RMSE, smoothness, reprojection error) | Planned |
-| **Week 5** | **Experiments + Evaluation** | - Run comparisons (Baseline 1 vs Baseline 2 vs Proposed)<br>- Generate quantitative metrics<br>- Create visualizations (trajectory + 3DGS overlay)<br>- Perform ablation study | Planned |
-| **Week 6** | **Paper Writing (Draft)** | - Write Introduction + Related Work<br>- Write Method section (with diagrams)<br>- Organize experiments and figures<br>- Prepare 60–70% draft | Planned |
-| **Week 7** | **Results + Refinement** | - Improve figures and visual quality<br>- Write Results + Discussion sections<br>- Add failure cases and limitations<br>- Complete full paper draft | Planned |
-| **Week 8** | **Final Polish + Submission** | - Format paper (ICVGIP template)<br>- Proofread and refine writing<br>- Finalize references and figures<br>- External review (if possible)<br>- Submit paper | Planned |
+| **Week 1** | **Pipeline Cleanup + Literature Survey** | - Rebuild clean modular pipeline from reference scripts<br>- Read key papers (3DGS, Dynamic NeRF/GS, tracking, triangulation)<br>- Write literature notes + identify research gaps<br>- Standardize configs, outputs, and folder structure<br>- Verify end-to-end trajectory → 3DGS overlay works cleanly | 🚧 In Progress |
+| **Week 2** | **Strong Baseline Construction** | - Implement proper triangulation baseline<br>- Implement DeepSORT/ByteTrack + geometry baseline<br>- Implement homography-based baseline (current best)<br>- Create unified trajectory export format<br>- Select datasets (custom + optional Wildtrack/KITTI) | Planned |
+| **Week 3** | **Core Contribution Design** | - Decide main novelty direction:<br>&nbsp;&nbsp;• temporal optimization<br>&nbsp;&nbsp;• uncertainty-aware smoothing<br>&nbsp;&nbsp;• trajectory-ground consistency<br>&nbsp;&nbsp;• dynamic-object-aware 3DGS integration<br>- Formulate equations<br>- Implement proposed method v1<br>- Generate initial comparison results | Planned |
+| **Week 4** | **Robustness + Temporal Modeling** | - Handle missing detections and ID switches<br>- Improve trajectory stability under occlusion<br>- Add temporal filtering / optimization<br>- Add uncertainty estimation or confidence weighting<br>- Begin quantitative evaluation metrics | Planned |
+| **Week 5** | **Experiments + Evaluation** | - Run all baselines vs proposed method<br>- Generate RMSE / reprojection / smoothness metrics<br>- Run ablation studies<br>- Generate qualitative visualizations<br>- Create 3DGS trajectory overlays for paper figures | Planned |
+| **Week 6** | **Paper Writing + Final Experiments** | - Write Introduction + Related Work<br>- Write Method section with diagrams/equations<br>- Write Experimental Setup<br>- Finalize remaining experiments<br>- Prepare tables and plots | Planned |
+| **Week 7** | **Paper Refinement + Visual Quality** | - Improve figures and visualizations<br>- Add failure cases and limitations<br>- Improve trajectory rendering quality<br>- Refine contribution framing<br>- Complete full paper draft | Planned |
+| **Week 8** | **Submission Preparation** | - Format in ICVGIP template<br>- Proofread and reduce ambiguity<br>- Finalize references and captions<br>- External feedback/review if possible<br>- Final submission | Planned |
 
 ---
 
-## 📊 Evaluation Plan
-- **Trajectory Error (RMSE / ATE)**  
-- **Temporal Smoothness**  
-- **Reprojection Error**  
-- **Qualitative Visualization in 3DGS**  
+# 📊 Planned Evaluation Metrics
+
+- RMSE trajectory error
+- Reprojection error
+- Temporal smoothness
+- Occlusion robustness
+- Trajectory stability
+- Qualitative 3DGS overlay quality
 
 ---
 
-## 🧠 Key Contribution Goal
-> Develop a method for **robust and temporally consistent 3D trajectory estimation integrated with neural rendering (3DGS)**.
+# 📂 Planned Repository Structure
+
+```bash
+project_root/
+│
+├── configs/
+├── scripts/
+│   ├── week1/
+│   ├── week2/
+│   ├── week3/
+│   └── ...
+│
+├── src/
+│   ├── tracking/
+│   ├── geometry/
+│   ├── smoothing/
+│   ├── visualization/
+│   └── evaluation/
+│
+├── results/
+├── outputs/
+├── logs/
+├── docs/
+└── README.md
+```
 
 ---
 
-## ⚠️ Important Notes
-- Focus on **clear contribution**, not just pipeline  
-- Strong **baselines + comparisons** are critical  
-- Visual results (3DGS + trajectory) are **very important for acceptance**  
+# 📖 Literature Survey Papers
+
+## Core 3DGS
+- 3D Gaussian Splatting for Real-Time Radiance Field Rendering
+
+## Dynamic Scene Modeling
+- D-NeRF
+- Dynamic 3D Gaussians
+
+## Tracking
+- DeepSORT
+- ByteTrack
+
+## Geometry
+- Multi-View Triangulation
+- Structure from Motion (SfM)
 
 ---
 
-## ✅ Progress Tracker Legend
-- `Planned` → Not started  
-- `In Progress` → Currently working  
-- `Done` → Completed  
+# 🚀 Current Focus
+
+## Week 1 Goals
+- Clean modular pipeline
+- Literature survey
+- Stable trajectory extraction
+- Reliable 3DGS integration
+- Research gap identification
 
 ---
 
-## 🚀 Final Goal
-Submission-ready **ICVGIP paper** with:
-- Clear novelty  
-- Strong experiments  
-- High-quality visuals  
+# 🧠 Current Research Direction
+
+> Temporally consistent 3D trajectory recovery and integration inside neural-rendered 3DGS scenes.
+
+---
+
+# 📌 Target Conference
+
+## ICVGIP 2026
+Goal: Submission-ready paper with:
+- clear novelty
+- strong baselines
+- quantitative evaluation
+- compelling visualizations
