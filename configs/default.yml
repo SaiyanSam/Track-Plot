@@ -1,0 +1,27 @@
+project:
+  name: 3dgs_trajectory_icvgip
+
+paths:
+  images_dir: results/colmap_output/images
+  transforms_json: results/colmap_output/transforms.json
+  output_dir: results
+  trajectory_csv: results/trajectory_raw.csv
+
+detection:
+  model: yolov8x.pt
+  classes: [2, 7]   # car, truck
+  confidence: 0.1
+  image_size: 1280
+  tracker: botsort.yaml
+
+geometry:
+  ground_axis: y
+  ground_search_min_offset: 0.01
+  ground_search_max_offset: 1.0
+  ground_search_step: 0.01
+  use_bbox_point: bottom_center
+
+smoothing:
+  enabled: true
+  window_size: 15
+  speed_spike_multiplier: 4.0
